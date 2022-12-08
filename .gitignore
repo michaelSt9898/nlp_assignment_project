@@ -1,1 +1,6 @@
 Datasets/
+glove.6B.100d.txt
+dependency_treebank
+coqa/test.json
+coqa/train.json
+__pycache__
