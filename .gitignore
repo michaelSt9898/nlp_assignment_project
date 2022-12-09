@@ -4,3 +4,4 @@ dependency_treebank
 coqa/test.json
 coqa/train.json
 __pycache__
+nlp-tutorial*
