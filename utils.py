@@ -53,19 +53,25 @@ def full_multiclass_report(model,
         y_true = np.argmax(y_true, axis=1)
 
     # 2. Predict classes and stores in y_pred
-    y_pred = model.predict(x) #batch?
+    y_pred = model.predict(x)  # batch?
     if not binary:
         y_pred = np.argmax(y_pred, axis=1)
 
     # 3. Print accuracy score
-    print("Accuracy : "+ str(accuracy_score(y_true, y_pred)))
+    print("Accuracy : " + str(accuracy_score(y_true, y_pred)))
 
     print("")
-    print(y_pred)
-    print(y_true)
+
+    # list english punctuation symbols
+    eng_punc = ['.', ',', '"', "'","''",  '?', '!', ':', ';', '(', ')', '[', ']', '{', '}', '%', '@', '#', '$', '^', '&', '*', '-', '_', '=', '+', '<', '>', '/', '~', '`', '|', '\\', ' ']
+    # create list of labels that are not punctuation
+    no_punc_labels = np.where(~np.isin(classes, eng_punc))[0]
+
+
     # 4. Print classification report
-    print("Classification Report")
-    print(classification_report(y_true, y_pred, digits=5))
+    print("")
+    print("Classification Report without punctuation")
+    print(classification_report(y_true, y_pred, labels=no_punc_labels, target_names=classes[no_punc_labels], digits=5, zero_division=0))
 
     # 5. Plot confusion matrix
     cnf_matrix = confusion_matrix(y_true, y_pred)
