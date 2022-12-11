@@ -1,0 +1,7 @@
+F1 macro scores
+   Validation set
+    0.03659892210419187
+   Test set
+    0.03772502790959564
+   Train set
+    0.07718012057260645
