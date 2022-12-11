@@ -1,6 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 def evaluate_prediction(y, y_pred, classes):
@@ -17,15 +21,22 @@ def evaluate_prediction(y, y_pred, classes):
 
     total = 0
     correct = 0
+    y_wo_punct = []
+    y_pred_wo_punct = []
     for i, el in enumerate(y):
         if el in punct_indexes:
             continue
         total += 1
+        y_wo_punct.append(el)
+        y_pred_wo_punct.append(y_pred[i])
+
         if el == y_pred[i]:
             correct += 1
 
     # correct = np.count_nonzero(y==y_pred)
-    print("Accuracy: {p:.2f} %".format(p=correct/total*100))
+    #print("Accuracy: {p:.2f} %".format(p=correct/len(y_wo_punct)*100))
+    return classification_report(y, y_pred, output_dict=True, zero_division=1)
+
 
 def plot_history(history):
     loss_list = [s for s in history.history.keys() if 'loss' in s and 'val' not in s]
