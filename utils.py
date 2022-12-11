@@ -3,6 +3,30 @@ import numpy as np
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 
 
+def evaluate_prediction(y, y_pred, classes):
+    punct_marcs = ["''", ",", ".", ":", '``', '0']
+    punct_indexes = [i for i, c in enumerate(classes) if c in punct_marcs]
+
+    assert y.shape == y_pred.shape
+
+    y = y.reshape(y.shape[0]*y.shape[1], -1)
+    y_pred = y_pred.reshape(y_pred.shape[0]*y_pred.shape[1], -1)
+
+    y_pred = np.argmax(y_pred, axis=1)
+    y = np.argmax(y, axis=1)
+
+    total = 0
+    correct = 0
+    for i, el in enumerate(y):
+        if el in punct_indexes:
+            continue
+        total += 1
+        if el == y_pred[i]:
+            correct += 1
+
+    # correct = np.count_nonzero(y==y_pred)
+    print("Accuracy: {p:.2f} %".format(p=correct/total*100))
+
 def plot_history(history):
     loss_list = [s for s in history.history.keys() if 'loss' in s and 'val' not in s]
     val_loss_list = [s for s in history.history.keys() if 'loss' in s and 'val' in s]
@@ -56,6 +80,8 @@ def full_multiclass_report(model,
     y_pred = model.predict(x)  # batch?
     if not binary:
         y_pred = np.argmax(y_pred, axis=1)
+
+    print(y_pred.shape)
 
     # 3. Print accuracy score
     print("Accuracy : " + str(accuracy_score(y_true, y_pred)))
